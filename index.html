@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web3Bank - P2P Payment Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animated background particles */
+        .bg-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #00d4ff;
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: float 6s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-10px) rotate(360deg); opacity: 0; }
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, #00d4ff, #0099cc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo::before {
+            content: "◊";
+            font-size: 2rem;
+            color: #00d4ff;
+        }
+
+        nav {
+            display: flex;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: #00d4ff;
+            transform: translateY(-2px);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #00d4ff;
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Main Content */
+        main {
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .hero {
+            margin-bottom: 4rem;
+        }
+
+        .main-title {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #ffffff, #00d4ff, #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            background-size: 200% 200%;
+            animation: gradient-shift 3s ease-in-out infinite;
+        }
+
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: #b0b0b0;
+            margin-bottom: 3rem;
+            font-weight: 300;
+        }
+
+        /* Auth Section */
+        .auth-section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .auth-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 35px 70px rgba(0, 212, 255, 0.1);
+        }
+
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 2rem;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 12px;
+            padding: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            gap: 6px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 1.2rem 1rem;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            color: #bbb;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Enhanced hover effect for tab buttons */
+        .tab-btn:hover {
+            color: #ffffff;
+            background: rgba(0, 212, 255, 0.15);
+            border-color: rgba(0, 212, 255, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 212, 255, 0.25);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(45deg, #00d4ff, #0099cc);
+            color: #ffffff;
+            border-color: #00d4ff;
+            box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
+            transform: translateY(-1px);
+        }
+
+        /* Active tab hover effect */
+        .tab-btn.active:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 12px 30px rgba(0, 212, 255, 0.5);
+            background: linear-gradient(45deg, #00e0ff, #00b3dd);
+            border-color: #00e0ff;
+        }
+
+        /* Subtle shine effect on hover */
+        .tab-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s;
+            pointer-events: none;
+        }
+
+        .tab-btn:hover::before {
+            left: 100%;
+        }
+
+        .auth-form {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 0;
+        }
+
+        .half-width {
+            flex: 1;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+            font-weight: 500;
+        }
+
+        .form-helper {
+            display: block;
+            font-size: 0.8rem;
+            color: #888;
+            margin-top: 0.3rem;
+            font-style: italic;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: #ffffff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-textarea {
+            min-height: 80px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #00d4ff;
+            box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.2);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .form-input.error {
+            border-color: #ff4757;
+            box-shadow: 0 0 0 3px rgba(255, 71, 87, 0.2);
+        }
+
+        .form-input.success {
+            border-color: #2ed573;
+            box-shadow: 0 0 0 3px rgba(46, 213, 115, 0.2);
+        }
+
+        .error-message {
+            color: #ff4757;
+            font-size: 0.8rem;
+            margin-top: 0.3rem;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .form-input::placeholder {
+            color: #888;
+        }
+
+        .full-width {
+            width: 100%;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #00d4ff, #0099cc);
+            color: #ffffff;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 212, 255, 0.3);
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        /* Wallet Section */
+        .wallet-section {
+            background: rgba(0, 212, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            transition: all 0.3s ease;
+        }
+
+        .wallet-section:hover {
+            transform: translateY(-5px);
+            background: rgba(0, 212, 255, 0.15);
+        }
+
+        .wallet-btn {
+            background: linear-gradient(45deg, #00d4ff, #0099cc);
+            color: #ffffff;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .wallet-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0, 212, 255, 0.4);
+        }
+
+        .wallet-status {
+            font-size: 0.9rem;
+            color: #b0b0b0;
+            padding: 0.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            margin-top: 1rem;
+            font-family: 'Courier New', monospace;
+        }
+
+        .connected {
+            color: #00ff88;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(0, 0, 0, 0.5);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem 0;
+            text-align: center;
+            color: #888;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav {
+                gap: 1rem;
+            }
+
+            .main-title {
+                font-size: 2.5rem;
+            }
+
+            .auth-section {
+                padding: 2rem 1rem;
+                margin: 1rem;
+            }
+        }
+
+        /* Loading animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #00d4ff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Navigation button styles */
+        .nav-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            position: relative;
+            padding-bottom: 5px;
+            transition: color 0.3s;
+        }
+
+        .nav-btn::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background-color: #00eaff;
+            transition: width 0.3s;
+        }
+
+        .nav-btn:hover,
+        .nav-btn.active {
+            color: #00eaff;
+        }
+
+        .nav-btn:hover::after,
+        .nav-btn.active::after {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated background particles -->
+    <div class="bg-particles" id="particles"></div>
+
+    <header id="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">Web3Bank</div>
+                <nav>
+                    <button class="nav-btn" onclick="window.location.href='home.html'">Home</button>
+                    <button class="nav-btn" onclick="window.location.href='contact.html'">Contact</button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="hero">
+                <h1 class="main-title">Welcome to Web3Bank</h1>
+                <p class="subtitle">Simulate P2P payments using Web3 wallets</p>
+            </div>
+
+            <div class="auth-section">
+                <div class="auth-tabs">
+                    <button class="tab-btn" onclick="showLogin(event)">Login</button>
+                    <button class="tab-btn" onclick="showRegister(event)">Register</button>
+                </div>
+
+                <!-- Login Form -->
+                <form id="loginForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="username">Username:</label>
+                        <input type="text" id="username" class="form-input" placeholder="Enter your username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" class="form-input" placeholder="Enter your password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary full-width">Login</button>
+                </form>
+
+                <!-- Register Form -->
+                <form id="registerForm" class="auth-form">
+                    <div class="form-row">
+                        <div class="form-group half-width">
+                            <label for="reg-firstname">First Name:</label>
+                            <input type="text" id="reg-firstname" class="form-input" placeholder="Enter first name" required>
+                            <small class="form-helper">At least 3 characters, alphabets only</small>
+                        </div>
+                        <div class="form-group half-width">
+                            <label for="reg-lastname">Last Name:</label>
+                            <input type="text" id="reg-lastname" class="form-input" placeholder="Enter last name" required>
+                            <small class="form-helper">Required field</small>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-username">User Name:</label>
+                        <input type="text" id="reg-username" class="form-input" placeholder="Xyz78" required>
+                        <small class="form-helper">Required field</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-email">Email ID:</label>
+                        <input type="email" id="reg-email" class="form-input" placeholder="name@domain.com" required>
+                        <small class="form-helper">Must follow standard email format</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-mobile">Mobile Number:</label>
+                        <input type="tel" id="reg-mobile" class="form-input" placeholder="Enter 10-digit mobile number" required>
+                        <small class="form-helper">Must be exactly 10 digits</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-password">Password:</label>
+                        <input type="password" id="reg-password" class="form-input" placeholder="Create a password" required>
+                        <small class="form-helper">Minimum 8 characters required</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-address">Address:</label>
+                        <textarea id="reg-address" class="form-input form-textarea" placeholder="Enter your complete address" required></textarea>
+                        <small class="form-helper">Complete address required</small>
+                    </div>
+                    <button type="submit" class="btn btn-primary full-width">Create Account</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Web3Bank</p>
+        </div>
+    </footer>
+
+    <script>
+        // Create animated background particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Tab switching functionality
+        function showLogin() {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.auth-form').forEach(form => form.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById('loginForm').classList.add('active');
+        }
+
+        function showRegister() {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.auth-form').forEach(form => form.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById('registerForm').classList.add('active');
+        }
+
+        // Login form handling
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (username && password) {
+                // Simulate login process
+                const submitBtn = e.target.querySelector('.btn-primary');
+                const originalText = submitBtn.textContent;
+                
+                submitBtn.innerHTML = '<span class="loading"></span> Logging in...';
+                submitBtn.disabled = true;
+                
+                setTimeout(() => {
+                    alert(`Welcome back, ${username}! Login simulation complete.`);
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                    // Reset form
+                    document.getElementById('username').value = '';
+                    document.getElementById('password').value = '';
+                }, 2000);
+            }
+        });
+
+        // Validation functions
+        function validateFirstName(firstName) {
+            const nameRegex = /^[A-Za-z]+$/;
+            return firstName.length >= 3 && nameRegex.test(firstName);
+        }
+
+        function validateLastName(lastName) {
+            return lastName.trim().length > 0;
+        }
+
+        function validateEmail(email) {
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            return emailRegex.test(email);
+        }
+
+        function validateMobile(mobile) {
+            const mobileRegex = /^\d{10}$/;
+            return mobileRegex.test(mobile);
+        }
+
+        function validatePassword(password) {
+            return password.length >= 8;
+        }
+
+        function validateAddress(address) {
+            return address.trim().length > 0;
+        }
+
+        function showError(inputId, message) {
+            const input = document.getElementById(inputId);
+            input.classList.add('error');
+            input.classList.remove('success');
+            
+            let errorMsg = input.parentNode.querySelector('.error-message');
+            if (!errorMsg) {
+                errorMsg = document.createElement('div');
+                errorMsg.className = 'error-message';
+                input.parentNode.appendChild(errorMsg);
+            }
+            errorMsg.textContent = message;
+            errorMsg.classList.add('show');
+        }
+
+        function showSuccess(inputId) {
+            const input = document.getElementById(inputId);
+            input.classList.add('success');
+            input.classList.remove('error');
+            
+            const errorMsg = input.parentNode.querySelector('.error-message');
+            if (errorMsg) {
+                errorMsg.classList.remove('show');
+            }
+        }
+
+        function clearValidation(inputId) {
+            const input = document.getElementById(inputId);
+            input.classList.remove('error', 'success');
+            
+            const errorMsg = input.parentNode.querySelector('.error-message');
+            if (errorMsg) {
+                errorMsg.classList.remove('show');
+            }
+        }
+
+        // Register form handling
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const firstName = document.getElementById('reg-firstname').value;
+            const lastName = document.getElementById('reg-lastname').value;
+            const email = document.getElementById('reg-email').value;
+            const mobile = document.getElementById('reg-mobile').value;
+            const password = document.getElementById('reg-password').value;
+            const address = document.getElementById('reg-address').value;
+            
+            let isValid = true;
+            
+            // Validate First Name
+            if (!validateFirstName(firstName)) {
+                showError('reg-firstname', 'First name must be at least 6 characters and contain only alphabets');
+                isValid = false;
+            } else {
+                showSuccess('reg-firstname');
+            }
+            
+            // Validate Last Name
+            if (!validateLastName(lastName)) {
+                showError('reg-lastname', 'Last name is required');
+                isValid = false;
+            } else {
+                showSuccess('reg-lastname');
+            }
+            
+            // Validate Email
+            if (!validateEmail(email)) {
+                showError('reg-email', 'Please enter a valid email address (name@domain.com)');
+                isValid = false;
+            } else {
+                showSuccess('reg-email');
+            }
+            
+            // Validate Mobile
+            if (!validateMobile(mobile)) {
+                showError('reg-mobile', 'Mobile number must be exactly 10 digits');
+                isValid = false;
+            } else {
+                showSuccess('reg-mobile');
+            }
+            
+            // Validate Password
+            if (!validatePassword(password)) {
+                showError('reg-password', 'Password must be at least 8 characters long');
+                isValid = false;
+            } else {
+                showSuccess('reg-password');
+            }
+            
+            // Validate Address
+            if (!validateAddress(address)) {
+                showError('reg-address', 'Address is required');
+                isValid = false;
+            } else {
+                showSuccess('reg-address');
+            }
+            
+            if (isValid) {
+                // Simulate registration process
+                const submitBtn = e.target.querySelector('.btn-primary');
+                const originalText = submitBtn.textContent;
+                
+                submitBtn.innerHTML = '<span class="loading"></span> Creating Account...';
+                submitBtn.disabled = true;
+                
+                setTimeout(() => {
+                    alert(`Account created successfully for ${firstName} ${lastName}! Registration complete.`);
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                    
+                    // Reset form
+                    document.getElementById('reg-firstname').value = '';
+                    document.getElementById('reg-lastname').value = '';
+                    document.getElementById('reg-email').value = '';
+                    document.getElementById('reg-mobile').value = '';
+                    document.getElementById('reg-password').value = '';
+                    document.getElementById('reg-address').value = '';
+                    
+                    // Clear all validations
+                    ['reg-firstname', 'reg-lastname', 'reg-email', 'reg-mobile', 'reg-password', 'reg-address'].forEach(id => {
+                        clearValidation(id);
+                    });
+                    
+                    // Switch to login tab
+                    showLogin();
+                    document.querySelector('.tab-btn').classList.add('active');
+                }, 2000);
+            }
+        });
+
+        // Real-time validation
+        document.getElementById('reg-firstname').addEventListener('blur', function() {
+            if (this.value) {
+                if (validateFirstName(this.value)) {
+                    showSuccess('reg-firstname');
+                } else {
+                    showError('reg-firstname', 'First name must be at least 6 characters and contain only alphabets');
+                }
+            }
+        });
+
+        document.getElementById('reg-mobile').addEventListener('input', function() {
+            // Only allow digits
+            this.value = this.value.replace(/\D/g, '');
+            // Limit to 10 digits
+            if (this.value.length > 10) {
+                this.value = this.value.slice(0, 10);
+            }
+        });
+
+        document.getElementById('reg-mobile').addEventListener('blur', function() {
+            if (this.value) {
+                if (validateMobile(this.value)) {
+                    showSuccess('reg-mobile');
+                } else {
+                    showError('reg-mobile', 'Mobile number must be exactly 10 digits');
+                }
+            }
+        });
+
+        document.getElementById('reg-email').addEventListener('blur', function() {
+            if (this.value) {
+                if (validateEmail(this.value)) {
+                    showSuccess('reg-email');
+                } else {
+                    showError('reg-email', 'Please enter a valid email address');
+                }
+            }
+        });
+
+        // Add smooth scrolling for navigation
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                // In a real app, this would scroll to sections
+                console.log('Navigate to:', this.getAttribute('href'));
+            });
+        });
+
+        // Initialize particles when page loads
+        window.addEventListener('load', createParticles);
+
+        // Initialize with no tab active - user must choose
+        document.addEventListener('DOMContentLoaded', function() {
+            // No default active tab - clean slate
+        });
+    </script>
+</body>
+</html>
