@@ -1,0 +1,29 @@
+# Node dependencies
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+
+# Environment variables
+.env
+
+# Prisma generated files (backend)
+backend/generated/
+backend/generated/**
+generated/
+generated/**
+
+# Prisma binary engines
+*.dll.node
+*.so.node
+*.dylib.node
+
+# Logs
+logs/
+*.log
+
+# OS / IDE files
+.DS_Store
+desktop.ini
+.vscode/
+.idea/

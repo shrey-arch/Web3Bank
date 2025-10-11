@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web3Bank Dashboard</title>
+    <style>
+        /* ===== COLOR VARIABLES ===== */
+        :root {
+            --platinum: #cfdbd5;
+            --alabaster: #e8eddf;
+            --saffron: #f5cb5c;
+            --eerie-black: #242423;
+            --jet: #333533;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, var(--alabaster) 0%, rgba(243, 214, 86, 0.8) 100%);
+            color: var(--eerie-black);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Animated background particles */
+        .bg-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--saffron);
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: float 8s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-10px) rotate(360deg); opacity: 0; }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        header {
+            background: rgba(51, 53, 51, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 7px solid var(--saffron);
+            padding: 1rem 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        header.scrolled {
+            background: rgba(51, 53, 51, 0.98);
+            padding: 0.5rem 0;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, var(--saffron), var(--platinum));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .logo::before {
+            content: "◊";
+            font-size: 2.5rem;
+            color: var(--saffron);
+        }
+
+         nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        nav a {
+            color: var(--alabaster);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+        }
+
+        nav a:hover {
+            color: var(--saffron);
+            background: rgba(245, 203, 92, 0.1);
+            transform: translateY(-2px);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--saffron);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        nav a:hover::after {
+            width: 80%;
+        }
+        
+
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .user-section span {
+        color:  rgb(255, 255, 255);
+        } 
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 20px;
+            background: rgb(255, 255, 255);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: var(--jet);
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 22px;
+            color: var(--saffron);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 40px 0;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-top: 80px; 
+            margin-bottom: 5px;
+            color: var(--eerie-black);
+            text-shadow: 2px 2px 4px rgba(245, 203, 92, 0.3);
+        }
+
+        .page-subtitle {
+            color: var(--jet);
+            font-size: 22px;
+            margin-bottom: 30px;
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .card {
+            background: rgba(69, 132, 199, 0.5);
+            border: 1px solid var(--platinum);
+            border-radius: 16px;
+            padding: 32px;
+            backdrop-filter: blur(20px);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: var(--saffron);
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px rgba(245, 203, 92, 0.2);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: between;
+            margin-bottom: 24px;
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--eerie-black);
+            margin-bottom: 4px;
+        }
+
+        .card-subtitle {
+            color: var(--jet);
+            font-size: 14px;
+        }
+
+        /* Wallet Connection Card */
+        .wallet-status {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 20px;
+            background: rgba(207, 219, 213, 0.3);
+            border-radius: 12px;
+            margin-bottom: 24px;
+            border: 1px solid var(--platinum);
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #d63031;
+            animation: pulse 2s infinite;
+        }
+
+        .status-dot.connected {
+            background: var(--saffron);
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .wallet-info {
+            flex: 1;
+        }
+
+        .wallet-label {
+            font-size: 12px;
+            color: var(--jet);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .wallet-address {
+            font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+            font-size: 14px;
+            color: var(--eerie-black);
+            word-break: break-all;
+            font-weight: 600;
+        }
+
+        .wallet-address.disconnected {
+            color: #d63031;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--saffron), #f0d674);
+            color: var(--eerie-black);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(245, 203, 92, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(207, 219, 213, 0.3);
+            color: var(--eerie-black);
+            border: 1px solid var(--platinum);
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background: rgba(207, 219, 213, 0.5);
+            border-color: var(--saffron);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #d63031, #e17055);
+            color: white;
+        }
+
+        .btn-danger:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(214, 48, 49, 0.3);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+            background: rgba(207, 219, 213, 0.3);
+            border-radius: 12px;
+            border: 1px solid var(--platinum);
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--jet);
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--jet);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Activity Feed */
+        .activity-feed {
+            grid-column: 1 / -1;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--platinum);
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 20px;
+            background: rgba(245, 203, 92, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--eerie-black);
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--eerie-black);
+        }
+
+        .activity-subtitle {
+            font-size: 14px;
+            color: var(--jet);
+        }
+
+        .activity-time {
+            font-size: 12px;
+            color: var(--jet);
+            opacity: 0.8;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(207, 219, 213, 0.3);
+            border-top: 2px solid var(--saffron);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Toast Notifications */
+        .toast {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            padding: 16px 20px;
+            background: rgba(69, 132, 199, 0.9);
+            border: 1px solid var(--saffron);
+            border-radius: 8px;
+            color: var(--eerie-black);
+            backdrop-filter: blur(20px);
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            max-width: 300px;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.success {
+            border-color: var(--saffron);
+            background: rgba(245, 203, 92, 0.2);
+        }
+
+        .toast.error {
+            border-color: #d63031;
+            background: rgba(214, 48, 49, 0.2);
+            color: #d63031;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--jet);
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+            color: var(--saffron);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+            
+            .wallet-status {
+                flex-direction: column;
+                text-align: center;
+                gap: 12px;
+            }
+            
+            .page-title {
+                font-size: 24px;
+            }
+        }
+</style>
+</head>
+<body>
+    <script>
+      // check if token exists in localStorage
+      const token = localStorage.getItem("token");
+      if (!token) {
+        alert("You must be logged in to access the dashboard.");
+        window.location.href = "index.html";
+      }
+    </script>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="home.html" class="logo">Web3Bank</a>
+                <nav>
+                 <div class="user-section">
+                        <div class="user-avatar" id="userAvatar">?</div>
+                        <span class="user-name" id="userName">User</span>
+                </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <h1 class="page-title">Dashboard</h1>
+            <p class="page-subtitle">Manage your Web3 wallet and digital assets</p>
+
+            <div class="dashboard-grid">
+                <!-- Wallet Connection -->
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <h2 class="card-title">Wallet Connection</h2>
+                            <p class="card-subtitle">Connect your MetaMask wallet to get started</p>
+                        </div>
+                    </div>
+
+                    <div class="wallet-status">
+                        <div class="status-dot" id="statusIndicator"></div>
+                        <div class="wallet-info">
+                            <div class="wallet-label">Status</div>
+                            <div class="wallet-address" id="walletAddress">Not Connected</div>
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button class="btn btn-primary" id="connectBtn">
+                            🦊 Connect MetaMask
+                        </button>
+                        <button class="btn btn-secondary" id="switchBtn" style="display: none;">
+                            🔄 Switch Account
+                        </button>
+                        <button class="btn btn-danger" id="disconnectBtn" style="display: none;">
+                            ⏻ Disconnect
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <h2 class="card-title">Account Overview</h2>
+                            <p class="card-subtitle">Your wallet statistics</p>
+                        </div>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-value" id="ethBalance">0.00</div>
+                            <div class="stat-label">ETH Balance</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="networkName">-</div>
+                            <div class="stat-label">Network</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="card activity-feed">
+                    <div class="card-header">
+                        <div>
+                            <h2 class="card-title">Recent Activity</h2>
+                            <p class="card-subtitle">Your latest transactions and activities</p>
+                        </div>
+                    </div>
+
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📝</div>
+                        <p>No recent activity</p>
+                        <p style="font-size: 14px; margin-top: 8px;">Connect your wallet to see transactions</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Toast notification -->
+    <div id="toast" class="toast"></div>
+
+    <script>
+        // State management
+        let isConnected = false;
+        let currentAccount = null;
+
+        // DOM elements
+        const connectBtn = document.getElementById('connectBtn');
+        const switchBtn = document.getElementById('switchBtn');
+        const disconnectBtn = document.getElementById('disconnectBtn');
+        const statusIndicator = document.getElementById('statusIndicator');
+        const walletAddress = document.getElementById('walletAddress');
+        const ethBalance = document.getElementById('ethBalance');
+        const networkName = document.getElementById('networkName');
+        const toast = document.getElementById('toast');
+        const userAvatar = document.getElementById('userAvatar');
+        const userName = document.getElementById('userName');
+
+        // Utility functions
+        function showToast(message, type = 'info') {
+            toast.textContent = message;
+            toast.className = `toast ${type} show`;
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        function formatAddress(address) {
+            if (!address) return 'Not Connected';
+            return `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
+        }
+
+        // Function to get username from localStorage
+        function getUsername() {
+            return localStorage.getItem('username') || 'User';
+        }
+
+        // Function to generate initials from username
+        function getInitialsFromUsername(username) {
+            if (!username || username === 'username') return '?';
+            
+            // Split by spaces and take first two words
+            const words = username.trim().split(/\s+/);
+            
+            if (words.length === 1) {
+                // If only one word, take first two characters
+                return words[0].substring(0, 2).toUpperCase();
+            } else {
+                // If multiple words, take first character of first two words
+                return (words[0].charAt(0) + words[1].charAt(0)).toUpperCase();
+            }
+        }
+
+        // Function to update user avatar and name from login data
+        function updateUserInfo() {
+            const username = getUsername();
+            const initials = getInitialsFromUsername(username);
+            
+            userAvatar.textContent = initials;
+            userName.textContent = username;
+        }
+
+
+        function updateUI(connected, account = null) {
+            isConnected = connected;
+            currentAccount = account;
+
+            if (connected && account) {
+                // Connected state
+                statusIndicator.classList.add('connected');
+                walletAddress.textContent = formatAddress(account);
+                walletAddress.classList.remove('disconnected');
+                
+                connectBtn.style.display = 'none';
+                switchBtn.style.display = 'inline-flex';
+                disconnectBtn.style.display = 'inline-flex';
+                
+                // Load additional data
+                loadBalance(account);
+                loadNetwork();
+            } else {
+                // Disconnected state
+                statusIndicator.classList.remove('connected');
+                walletAddress.textContent = 'Not Connected';
+                walletAddress.classList.add('disconnected');
+                
+                connectBtn.style.display = 'inline-flex';
+                switchBtn.style.display = 'none';
+                disconnectBtn.style.display = 'none';
+                
+                // Reset data
+                ethBalance.textContent = '0.00';
+                networkName.textContent = '-';
+            }
+        }
+
+        async function loadBalance(account) {
+            try {
+                const balance = await window.ethereum.request({
+                    method: 'eth_getBalance',
+                    params: [account, 'latest']
+                });
+                
+                // Convert Wei to ETH
+                const ethValue = parseInt(balance, 16) / Math.pow(10, 18);
+                ethBalance.textContent = ethValue.toFixed(4);
+            } catch (error) {
+                console.error('Error loading balance:', error);
+                ethBalance.textContent = 'Error';
+            }
+        }
+
+        async function loadNetwork() {
+            try {
+                const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+                const networks = {
+                    '0x1': 'Ethereum',
+                    '0x3': 'Ropsten',
+                    '0x4': 'Rinkeby',
+                    '0x5': 'Goerli',
+                    '0x89': 'Polygon',
+                    '0xa86a': 'Avalanche',
+                    '0xa4b1': 'Arbitrum'
+                };
+                
+                networkName.textContent = networks[chainId] || 'Unknown';
+            } catch (error) {
+                console.error('Error loading network:', error);
+                networkName.textContent = 'Error';
+            }
+        }
+
+        // Wallet functions
+        async function connectWallet() {
+            if (typeof window.ethereum === 'undefined') {
+                showToast('MetaMask is not installed. Please install it first.', 'error');
+                return;
+            }
+
+            const originalText = connectBtn.innerHTML;
+            connectBtn.innerHTML = '<div class="spinner"></div> Connecting...';
+            connectBtn.disabled = true;
+
+            try {
+                const accounts = await window.ethereum.request({
+                    method: 'eth_requestAccounts'
+                });
+
+                if (accounts.length > 0) {
+                    updateUI(true, accounts[0]);
+                    showToast('Wallet connected successfully!', 'success');
+                }
+            } catch (error) {
+                console.error('Connection error:', error);
+                if (error.code === 4001) {
+                    showToast('Connection rejected by user', 'error');
+                } else {
+                    showToast('Failed to connect wallet', 'error');
+                }
+            } finally {
+                connectBtn.innerHTML = originalText;
+                connectBtn.disabled = false;
+            }
+        }
+
+        async function switchAccount() {
+            const originalText = switchBtn.innerHTML;
+            switchBtn.innerHTML = '<div class="spinner"></div> Switching...';
+            switchBtn.disabled = true;
+
+            try {
+                await window.ethereum.request({
+                    method: 'wallet_requestPermissions',
+                    params: [{ eth_accounts: {} }]
+                });
+
+                const accounts = await window.ethereum.request({
+                    method: 'eth_accounts'
+                });
+
+                if (accounts.length > 0) {
+                    updateUI(true, accounts[0]);
+                    showToast('Account switched successfully!', 'success');
+                }
+            } catch (error) {
+                console.error('Switch error:', error);
+                showToast('Failed to switch account', 'error');
+            } finally {
+                switchBtn.innerHTML = originalText;
+                switchBtn.disabled = false;
+            }
+        }
+
+        function disconnectWallet() {
+            updateUI(false);
+            showToast('Wallet disconnected', 'info');
+        }
+
+        // Event listeners
+        connectBtn.addEventListener('click', connectWallet);
+        switchBtn.addEventListener('click', switchAccount);
+        disconnectBtn.addEventListener('click', disconnectWallet);
+
+        // MetaMask event listeners
+        if (window.ethereum) {
+            // Account changes
+            window.ethereum.on('accountsChanged', (accounts) => {
+                if (accounts.length === 0) {
+                    updateUI(false);
+                    showToast('Account disconnected', 'info');
+                } else if (currentAccount !== accounts[0]) {
+                    updateUI(true, accounts[0]);
+                    showToast('Account changed', 'info');
+                }
+            });
+
+            // Chain changes
+            window.ethereum.on('chainChanged', (chainId) => {
+                loadNetwork();
+                if (currentAccount) {
+                    loadBalance(currentAccount);
+                }
+                showToast('Network changed', 'info');
+            });
+
+            // Connection changes
+            window.ethereum.on('connect', () => {
+                console.log('MetaMask connected');
+            });
+
+            window.ethereum.on('disconnect', () => {
+                updateUI(false);
+                showToast('MetaMask disconnected', 'info');
+            });
+        }
+
+        // Initialize
+        window.addEventListener('load', async () => {
+            if (window.ethereum) {
+                try {
+                    // Check if already connected
+                    const accounts = await window.ethereum.request({
+                        method: 'eth_accounts'
+                    });
+
+                    if (accounts.length > 0) {
+                        updateUI(true, accounts[0]);
+                    }
+                } catch (error) {
+                    console.error('Initialization error:', error);
+                }
+            }
+        });
+
+        // Initialize username & avatar from localStorage
+        window.addEventListener('load', () => {
+            updateUserInfo();
+} );
+    </script>
+</body>
+</html>

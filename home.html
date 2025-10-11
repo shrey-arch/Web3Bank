@@ -3,8 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web3Bank | Home - Next-Gen P2P Payments</title>
+    <title>Web3Bank | Home - Next-Gen Payments</title>
     <style>
+        /* ===== COLOR VARIABLES ===== */
+        :root {
+            --platinum: #cfdbd5;
+            --alabaster: #e8eddf;
+            --saffron: #f5cb5c;
+            --eerie-black: #242423;
+            --jet: #333533;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -17,8 +26,8 @@
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
-            color: #ffffff;
+            background: linear-gradient(135deg, var(--alabaster) 0%, rgba(243, 214, 86, 0.8) 100%);
+            color: var(--eerie-black);
             line-height: 1.6;
             overflow-x: hidden;
         }
@@ -38,7 +47,7 @@
             position: absolute;
             width: 2px;
             height: 2px;
-            background: #00d4ff;
+            background: var(--saffron);
             border-radius: 50%;
             opacity: 0.6;
             animation: float 8s infinite linear;
@@ -61,9 +70,9 @@
 
         /* Header */
         header {
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(51, 53, 51, 0.95);
             backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 7px solid var(--saffron);
             padding: 1rem 0;
             position: fixed;
             top: 0;
@@ -73,7 +82,7 @@
         }
 
         header.scrolled {
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(51, 53, 51, 0.98);
             padding: 0.5rem 0;
         }
 
@@ -86,7 +95,7 @@
         .logo {
             font-size: 1.8rem;
             font-weight: 800;
-            background: linear-gradient(45deg, #00d4ff, #0099cc);
+            background: linear-gradient(45deg, var(--saffron), var(--platinum));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -98,8 +107,8 @@
 
         .logo::before {
             content: "◊";
-            font-size: 2rem;
-            color: #00d4ff;
+            font-size: 2.5rem;
+            color: var(--saffron);
         }
 
         nav {
@@ -109,7 +118,7 @@
         }
 
         nav a {
-            color: #ffffff;
+            color: var(--alabaster);
             text-decoration: none;
             font-weight: 500;
             transition: all 0.3s ease;
@@ -119,8 +128,8 @@
         }
 
         nav a:hover {
-            color: #00d4ff;
-            background: rgba(0, 212, 255, 0.1);
+            color: var(--saffron);
+            background: rgba(245, 203, 92, 0.1);
             transform: translateY(-2px);
         }
 
@@ -131,7 +140,7 @@
             left: 50%;
             width: 0;
             height: 2px;
-            background: #00d4ff;
+            background: var(--saffron);
             transition: all 0.3s ease;
             transform: translateX(-50%);
         }
@@ -160,22 +169,13 @@
             font-size: 4rem;
             font-weight: 900;
             margin-bottom: 1.5rem;
-            background: linear-gradient(45deg, #ffffff, #00d4ff, #ffffff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            background-size: 200% 200%;
-            animation: gradient-shift 4s ease-in-out infinite;
-        }
-
-        @keyframes gradient-shift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
+            color: var(--eerie-black);
+            text-shadow: 2px 2px 4px rgba(245, 203, 92, 0.3);
         }
 
         .hero-subtitle {
             font-size: 1.4rem;
-            color: #b0b0b0;
+            color: var(--jet);
             margin-bottom: 3rem;
             font-weight: 300;
             max-width: 600px;
@@ -205,20 +205,20 @@
         }
 
         .btn-primary {
-            background: linear-gradient(45deg, #00d4ff, #0099cc);
-            color: #ffffff;
-            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+            background: linear-gradient(45deg, var(--saffron), #f0d674);
+            color: var(--eerie-black);
+            box-shadow: 0 10px 30px rgba(245, 203, 92, 0.3);
         }
 
         .btn-secondary {
-            background: rgba(255, 255, 255, 0.1);
-            color: #ffffff;
-            border: 2px solid rgba(255, 255, 255, 0.3);
+            background: rgba(207, 219, 213, 0.3);
+            color: var(--eerie-black);
+            border: 2px solid var(--platinum);
         }
 
         .btn:hover {
             transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.4);
+            box-shadow: 0 20px 40px rgba(245, 203, 92, 0.4);
         }
 
         .btn::before {
@@ -228,7 +228,7 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            background: linear-gradient(90deg, transparent, rgba(232, 237, 223, 0.3), transparent);
             transition: left 0.5s;
         }
 
@@ -240,15 +240,15 @@
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
+            gap: 3rem;
             margin-top: 4rem;
         }
 
         .feature-card {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(69, 132, 199, 0.5);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
+            border: 1px solid var(--platinum);
+            border-radius: 25px;
             padding: 2rem;
             text-align: center;
             transition: all 0.3s ease;
@@ -257,63 +257,72 @@
 
         .feature-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 25px 50px rgba(0, 212, 255, 0.2);
-            border-color: rgba(0, 212, 255, 0.3);
+            box-shadow: 0 25px 50px rgba(245, 203, 92, 0.2);
+            border-color: var(--saffron);
         }
 
         .feature-icon {
             font-size: 3rem;
             margin-bottom: 1rem;
             display: block;
+            color: var(--saffron);
         }
 
         .feature-title {
-            font-size: 1.3rem;
+            font-size: 1.5rem;
             font-weight: 600;
             margin-bottom: 1rem;
-            color: #00d4ff;
+            color: var(--eerie-black);
         }
 
         .feature-description {
-            color: #b0b0b0;
+            color: var(--jet);
             line-height: 1.6;
+            text-align: justify;
         }
 
         /* About Section */
         #about {
             padding: 80px 0;
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(69, 132, 199, 0.5);
             backdrop-filter: blur(10px);
             margin: 80px 0;
-            border-radius: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 40px;
+            border: 1px solid var(--platinum);
+            max-width: 1100px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 25px 50px rgba(51, 53, 51, 0.2);
+            transition: all 0.3s ease;
         }
 
         .about-content {
             max-width: 800px;
             margin: 0 auto;
-            text-align: center;
+            text-align: justify;
         }
 
         .about-title {
             font-size: 2.5rem;
             font-weight: 700;
             margin-bottom: 2rem;
-            color: #ffffff;
+            text-align: center;
+            color: var(--eerie-black);
         }
 
         .about-text {
             font-size: 1.2rem;
-            color: #b0b0b0;
+            color: var(--jet);
             line-height: 1.8;
             margin-bottom: 2rem;
         }
+
         .stats-grid {
             display: flex;
-            justify-content: center; /* or space-between, space-around, etc. */
-            gap: 3rem; /* optional spacing between items */
+            justify-content: center;
+            gap: 3rem;
             align-items: center;
-            flex-wrap: wrap; /* or remove this if you don't want wrapping on smaller screens */
+            flex-wrap: wrap;
             margin-top: 3rem;
         }
 
@@ -322,14 +331,14 @@
         }
 
         .stat-number {
-            font-size: 2.5rem;
+            font-size: 3.2rem;
             font-weight: 800;
-            color: #00d4ff;
+            color: var(--saffron);
             display: block;
         }
 
         .stat-label {
-            color: #888;
+            color: var(--jet);
             font-size: 0.9rem;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -337,8 +346,9 @@
 
         /* Footer */
         footer {
-            background: rgba(0, 0, 0, 0.8);
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(36, 36, 35, 0.9);
+            border-top: 1px solid rgba(207, 219, 213, 0.3);
+            border-top: 2px solid var(--saffron);
             padding: 3rem 0 2rem;
             text-align: center;
             margin-top: 80px;
@@ -352,25 +362,25 @@
         }
 
         .footer-section h4 {
-            color: #00d4ff;
+            color: var(--saffron);
             margin-bottom: 1rem;
             font-size: 1.1rem;
         }
 
         .footer-section p, .footer-section a {
-            color: #888;
+            color: var(--platinum);
             text-decoration: none;
             line-height: 1.8;
         }
 
         .footer-section a:hover {
-            color: #00d4ff;
+            color: var(--saffron);
         }
 
         .footer-bottom {
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid rgba(207, 219, 213, 0.3);
             padding-top: 2rem;
-            color: #666;
+            color: var(--platinum);
         }
 
         /* Animations */
@@ -434,8 +444,8 @@
             bottom: 2rem;
             left: 50%;
             transform: translateX(-50%);
-            color: #00d4ff;
-            font-size: 2rem;
+            color: var(--eerie-black);
+            font-size: 4rem;
             animation: bounce 2s infinite;
         }
 
@@ -444,7 +454,7 @@
             40% { transform: translateX(-50%) translateY(-10px); }
             60% { transform: translateX(-50%) translateY(-5px); }
         }
-    </style>
+</style>
 </head>
 <body>
     <!-- Animated background particles -->
@@ -469,7 +479,7 @@
     <section id="hero">
         <div class="container">
             <div class="hero-content">
-                <h1 class="hero-title">Next-Gen P2P Payments on Web3</h1>
+                <h1 class="hero-title">Next-Gen Payments on Web3</h1>
                 <p class="hero-subtitle">
                     Experience decentralized peer-to-peer transactions securely and instantly. 
                     Join the future of digital finance with blockchain-powered payments.
@@ -518,8 +528,6 @@
                     digital wallets and experience P2P transactions using blockchain-inspired design. 
                     Our platform bridges the gap between traditional banking and decentralized finance, 
                     offering a secure, transparent, and user-friendly environment for digital transactions.
-                </p>
-                <p class="about-text">
                     Built with the latest Web3 technologies, we provide a seamless experience that 
                     empowers users to take control of their financial future while maintaining the 
                     highest standards of security and privacy.

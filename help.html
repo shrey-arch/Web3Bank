@@ -5,6 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Us | Web3Bank - Get in Touch</title>
     <style>
+        /* ===== COLOR VARIABLES ===== */
+        :root {
+            --platinum: #cfdbd5;
+            --alabaster: #e8eddf;
+            --saffron: #f5cb5c;
+            --eerie-black: #242423;
+            --jet: #333533;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -17,8 +26,8 @@
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
-            color: #ffffff;
+            background: linear-gradient(135deg, var(--alabaster) 0%, rgba(243, 214, 86, 0.8) 100%);
+            color: var(--eerie-black);
             line-height: 1.6;
             overflow-x: hidden;
             min-height: 100vh;
@@ -39,7 +48,7 @@
             position: absolute;
             width: 2px;
             height: 2px;
-            background: #00d4ff;
+            background: var(--saffron);
             border-radius: 50%;
             opacity: 0.6;
             animation: float 8s infinite linear;
@@ -62,9 +71,9 @@
 
         /* Header */
         header {
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(51, 53, 51, 0.95);
             backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 7px solid var(--saffron);
             padding: 1rem 0;
             position: fixed;
             top: 0;
@@ -74,7 +83,7 @@
         }
 
         header.scrolled {
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(51, 53, 51, 0.98);
             padding: 0.5rem 0;
         }
 
@@ -87,7 +96,7 @@
         .logo {
             font-size: 1.8rem;
             font-weight: 800;
-            background: linear-gradient(45deg, #00d4ff, #0099cc);
+            background: linear-gradient(45deg, var(--saffron), var(--platinum));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -99,8 +108,8 @@
 
         .logo::before {
             content: "◊";
-            font-size: 2rem;
-            color: #00d4ff;
+            font-size: 2.5rem;
+            color: var(--saffron);
         }
 
         nav {
@@ -110,7 +119,7 @@
         }
 
         nav a {
-            color: #ffffff;
+            color: var(--alabaster);
             text-decoration: none;
             font-weight: 500;
             transition: all 0.3s ease;
@@ -120,8 +129,8 @@
         }
 
         nav a:hover {
-            color: #00d4ff;
-            background: rgba(0, 212, 255, 0.1);
+            color: var(--saffron);
+            background: rgba(245, 203, 92, 0.1);
             transform: translateY(-2px);
         }
 
@@ -132,7 +141,7 @@
             left: 50%;
             width: 0;
             height: 2px;
-            background: #00d4ff;
+            background: var(--saffron);
             transition: all 0.3s ease;
             transform: translateX(-50%);
         }
@@ -153,25 +162,16 @@
         }
 
         .contact-title {
-            font-size: 3.5rem;
+            font-size: 3.8rem;
             font-weight: 900;
             margin-bottom: 1.5rem;
-            background: linear-gradient(45deg, #ffffff, #00d4ff, #ffffff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            background-size: 200% 200%;
-            animation: gradient-shift 4s ease-in-out infinite;
-        }
-
-        @keyframes gradient-shift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
+            color: var(--eerie-black);
+            text-shadow: 2px 2px 4px rgba(245, 203, 92, 0.3);
         }
 
         .contact-subtitle {
-            font-size: 1.3rem;
-            color: #b0b0b0;
+            font-size: 1.5rem;
+            color: var(--jet);
             margin-bottom: 3rem;
             font-weight: 300;
             max-width: 600px;
@@ -188,9 +188,9 @@
         }
 
         .contact-card {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(69, 132, 199, 0.5);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--saffron);
             border-radius: 20px;
             padding: 2.5rem;
             text-align: center;
@@ -200,27 +200,27 @@
 
         .contact-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 25px 50px rgba(0, 212, 255, 0.2);
-            border-color: rgba(0, 212, 255, 0.3);
-            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 50px rgba(245, 203, 92, 0.2);
+            border-color: var(--saffron);
+            background: rgba(69, 132, 199, 0.6);
         }
 
         .contact-icon {
             font-size: 3rem;
             margin-bottom: 1.5rem;
             display: block;
-            color: #00d4ff;
+            color: var(--saffron);
         }
 
         .contact-method-title {
-            font-size: 1.5rem;
+            font-size: 2rem;
             font-weight: 600;
             margin-bottom: 1rem;
-            color: #ffffff;
+            color: var(--eerie-black);
         }
 
         .contact-method-info {
-            color: #b0b0b0;
+            color: var(--jet);
             margin-bottom: 1.5rem;
             line-height: 1.6;
         }
@@ -229,22 +229,23 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            color: #00d4ff;
+            color: var(--eerie-black);
             text-decoration: none;
             font-weight: 600;
             padding: 0.8rem 1.5rem;
-            border: 2px solid #00d4ff;
+            border: 2px solid var(--saffron);
             border-radius: 50px;
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            background: rgba(245, 203, 92, 0.1);
         }
 
         .contact-link:hover {
-            background: #00d4ff;
-            color: #ffffff;
+            background: var(--saffron);
+            color: var(--eerie-black);
             transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0, 212, 255, 0.4);
+            box-shadow: 0 10px 25px rgba(245, 203, 92, 0.4);
         }
 
         .contact-link::before {
@@ -254,7 +255,7 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            background: linear-gradient(90deg, transparent, rgba(232, 237, 223, 0.3), transparent);
             transition: left 0.5s;
         }
 
@@ -264,16 +265,21 @@
 
         /* Contact Form */
         .contact-form-section {
-            background: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(10px);
-            margin: 4rem 0;
-            padding: 4rem 0;
-            border-radius: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(232, 237, 223, 0.85);
+            backdrop-filter: blur(20px);
+            border: 2px solid var(--saffron);
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 25px 50px rgba(51, 53, 51, 0.2);
+            transition: all 0.3s ease;
         }
 
         .form-container {
-            max-width: 600px;
+            max-width: 100%;
             margin: 0 auto;
         }
 
@@ -282,35 +288,40 @@
             font-weight: 700;
             margin-bottom: 1rem;
             text-align: center;
-            color: #ffffff;
+            color: var(--eerie-black);
+            background: rgba(59, 148, 142, 0.345); 
+            padding: 0.5rem 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
         .form-subtitle {
             text-align: center;
-            color: #b0b0b0;
-            margin-bottom: 3rem;
-            font-size: 1.1rem;
+            color: var(--jet);
+            margin-bottom: 2rem;
+            font-size: 1.8rem;
+            font-weight: 400;
         }
 
         .form-group {
-            margin-bottom: 2rem;
+            margin-bottom: 1.8rem;
         }
 
         .form-group label {
             display: block;
             margin-bottom: 0.8rem;
-            color: #ffffff;
+            color: var(--eerie-black);
             font-weight: 500;
-            font-size: 1rem;
+            font-size: 1.3rem;
         }
 
         .form-input, .form-textarea {
             width: 100%;
             padding: 1rem 1.5rem;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(59, 148, 142, 0.345);
+            border: 1px solid rgba(207, 219, 213, 0.5);
             border-radius: 10px;
-            color: #ffffff;
+            color: var(--eerie-black);
             font-size: 1rem;
             font-family: inherit;
             transition: all 0.3s ease;
@@ -323,20 +334,21 @@
 
         .form-input:focus, .form-textarea:focus {
             outline: none;
-            border-color: #00d4ff;
-            box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.2);
-            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--saffron);
+            box-shadow: 0 0 0 3px rgba(245, 203, 92, 0.3);
+            background: rgba(207, 219, 213, 0.5);
         }
 
         .form-input::placeholder, .form-textarea::placeholder {
-            color: #888;
+            color: var(--jet);
+            opacity: 0.7;
         }
 
         .submit-btn {
             width: 100%;
             padding: 1.2rem 2rem;
-            background: linear-gradient(45deg, #00d4ff, #0099cc);
-            color: #ffffff;
+            background: linear-gradient(45deg, var(--saffron), #f0d674);
+            color: var(--eerie-black);
             border: none;
             border-radius: 50px;
             font-size: 1.1rem;
@@ -349,7 +361,7 @@
 
         .submit-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(0, 212, 255, 0.4);
+            box-shadow: 0 15px 30px rgba(245, 203, 92, 0.4);
         }
 
         .submit-btn::before {
@@ -359,7 +371,7 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            background: linear-gradient(90deg, transparent, rgba(232, 237, 223, 0.3), transparent);
             transition: left 0.5s;
         }
 
@@ -369,45 +381,51 @@
 
         /* Additional Info Section */
         .additional-info {
-            background: rgba(0, 212, 255, 0.1);
+            background: rgba(69, 132, 199, 0.5);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(0, 212, 255, 0.3);
-            border-radius: 20px;
+            border: 1px solid var(--saffron);
+            border-radius: 40px;
             padding: 3rem;
             margin: 4rem 0;
             text-align: center;
+            max-width: 1100px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 25px 50px rgba(51, 53, 51, 0.2);
+            transition: all 0.3s ease;
         }
 
         .info-title {
             font-size: 2rem;
             font-weight: 700;
             margin-bottom: 1.5rem;
-            color: #00d4ff;
+            color: var(--eerie-black);
         }
 
         .info-text {
             font-size: 1.1rem;
-            color: #b0b0b0;
+            color: var(--jet);
             margin-bottom: 2rem;
             line-height: 1.7;
+            text-align: justify;
         }
 
         .response-time {
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            background: rgba(0, 255, 136, 0.1);
-            color: #00ff88;
+            background: rgba(207, 219, 213, 0.4);
+            color: var(--eerie-black);
             padding: 0.8rem 1.5rem;
             border-radius: 50px;
-            border: 1px solid rgba(0, 255, 136, 0.3);
+            border: 1px solid var(--platinum);
             font-weight: 600;
         }
 
         /* Footer */
         footer {
-            background: rgba(0, 0, 0, 0.8);
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(36, 36, 35, 0.9);
+            border-top: 2px solid var(--saffron);
             padding: 3rem 0 2rem;
             text-align: center;
             margin-top: 4rem;
@@ -421,25 +439,25 @@
         }
 
         .footer-section h4 {
-            color: #00d4ff;
+            color: var(--saffron);
             margin-bottom: 1rem;
             font-size: 1.1rem;
         }
 
         .footer-section p, .footer-section a {
-            color: #888;
+            color: var(--platinum);
             text-decoration: none;
             line-height: 1.8;
         }
 
         .footer-section a:hover {
-            color: #00d4ff;
+            color: var(--saffron);
         }
 
         .footer-bottom {
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid rgba(207, 219, 213, 0.3);
             padding-top: 2rem;
-            color: #666;
+            color: var(--platinum);
         }
 
         /* Animations */
@@ -459,9 +477,9 @@
             display: inline-block;
             width: 20px;
             height: 20px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
+            border: 3px solid rgba(207, 219, 213, 0.3);
             border-radius: 50%;
-            border-top-color: #00d4ff;
+            border-top-color: var(--saffron);
             animation: spin 1s ease-in-out infinite;
         }
 
@@ -471,9 +489,9 @@
 
         /* Success message */
         .success-message {
-            background: rgba(0, 255, 136, 0.1);
-            border: 1px solid rgba(0, 255, 136, 0.3);
-            color: #00ff88;
+            background: rgba(207, 219, 213, 0.4);
+            border: 1px solid var(--platinum);
+            color: var(--eerie-black);
             padding: 1rem;
             border-radius: 10px;
             margin-top: 1rem;
@@ -516,7 +534,7 @@
                 padding: 2rem 1.5rem;
             }
         }
-    </style>
+</style>
 </head>
 <body>
     <!-- Animated background particles -->
@@ -581,26 +599,26 @@
         <div class="container">
             <div class="form-container">
                 <h2 class="form-title">Send Us a Message</h2>
-                <p class="form-subtitle">Fill out the form below and we'll respond as soon as possible</p>
+                <p class="form-subtitle">Fill out the form and we'll respond</p>
                 
                 <form id="contactForm">
                     <div class="form-group">
-                        <label for="name">Full Name *</label>
+                        <label for="name">Full Name:</label>
                         <input type="text" id="name" name="name" class="form-input" placeholder="Enter your full name" required>
                     </div>
                     
                     <div class="form-group">
-                        <label for="email">Email Address *</label>
+                        <label for="email">Email Address:</label>
                         <input type="email" id="email" name="email" class="form-input" placeholder="Enter your email address" required>
                     </div>
                     
                     <div class="form-group">
-                        <label for="subject">Subject *</label>
+                        <label for="subject">Subject:</label>
                         <input type="text" id="subject" name="subject" class="form-input" placeholder="What's this about?" required>
                     </div>
                     
                     <div class="form-group">
-                        <label for="message">Message *</label>
+                        <label for="message">Message:</label>
                         <textarea id="message" name="message" class="form-textarea" placeholder="Tell us more about your inquiry..." required></textarea>
                     </div>
                     
