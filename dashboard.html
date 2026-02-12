@@ -736,15 +736,21 @@
                     '0x5': 'Goerli',
                     '0x89': 'Polygon',
                     '0xa86a': 'Avalanche',
-                    '0xa4b1': 'Arbitrum'
+                    '0xa4b1': 'Arbitrum',
+                    '0xaa36a7': 'Sepolia',
+                    '0x539': 'Ganache Local'
                 };
                 
-                networkName.textContent = networks[chainId] || 'Unknown';
-            } catch (error) {
-                console.error('Error loading network:', error);
-                networkName.textContent = 'Error';
-            }
-        }
+                  networkName.textContent = networks[chainId] || `Unknown Network (${chainId})`;
+        
+        // Debug log to see what chainId you're getting
+        console.log('Current chainId:', chainId);
+        console.log('Network name:', networks[chainId]);
+    } catch (error) {
+        console.error('Error loading network:', error);
+        networkName.textContent = 'Error';
+    }
+}
 
         // Wallet functions
         async function connectWallet() {
